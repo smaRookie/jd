@@ -88,7 +88,7 @@ function carousel(){
 		animate(1,flag);
 	};
 	// 为控制按钮添加事件
-	for(j=0;j<ctr.length;j++){
+	for(var j=0;j<ctr.length;j++){
 		ctr[j].index=j;
 		ctr[j].onmouseover=function(){
 			animate(this.index-m,flag);
@@ -145,7 +145,7 @@ function g(){
 		animate(1,flag);
 	};
 	// 为控制按钮添加事件
-	for(j=0;j<pu.length;j++){
+	for(var j=0;j<pu.length;j++){
 		pu[j].index=j;
 		pu[j].onmouseover=function(){
 			animate(this.index-m,flag);
@@ -190,7 +190,7 @@ function h(){
 	var di=document.getElementsByClassName('pro_3-show_1');
 	var mar=document.getElementsByClassName('mark')[0];
 	var m=0,now,next;
-	for(i=0;i<con.length;i++){
+	for(var i=0;i<con.length;i++){
 		con[i].index=i;
 		con[i].onmouseover=function(){
 			animate(this.index-m);
@@ -210,7 +210,7 @@ function h(){
 			}else if(next<0){
 				next=con.length-1;
 			}
-			for(j=0;j<con.length;j++){
+			for(var j=0;j<con.length;j++){
 				di[j].style.display='none';
 			}
 			di[next].style.display="block";
