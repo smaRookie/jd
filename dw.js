@@ -1,3 +1,4 @@
+"use strict";
 // 封装添加事件函数
 function addfun(element,type,fun){
 	if(element.addEventListener){
