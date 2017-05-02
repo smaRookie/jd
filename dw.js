@@ -51,7 +51,7 @@ var side=function(){
 	var item=document.getElementsByClassName('col1_show_item');
 
 	var s=document.getElementsByClassName('item');
-	for(let i=0;i<15;i++){
+	for(i=0;i<15;i++){
 		s[i].onmouseover=function(event){
 			sidecon.style.display='block';
 			item[i].style.display='block';
