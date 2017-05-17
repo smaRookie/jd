@@ -133,10 +133,10 @@ function carousel(){
 var a=[0,true];
 	// 页面加载后动画每隔5s自动执行
 	var time=setInterval(function(){
-		console.log(a[1]);
+		
 		a=animate(1,a[1],car,ctr,a[0]);
-		console.log(a[1]);
-	},2000);
+		
+	},3000);
 
 	//  col为图片的父容器当鼠标移入图片就停止自动动画 移除执行动画
 	var col=document.getElementsByClassName('col2-top')[0];
@@ -188,7 +188,7 @@ function special(){
 	p.onmouseout=function(){
 		time=setInterval(function(){
 		a=animate(1,a[1],pro,pu,a[0]);
-	},2000);
+	},3000);
 	};
 
 	le.onclick=function(){
