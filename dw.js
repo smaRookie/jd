@@ -1,4 +1,3 @@
-"use strict";
 // 封装添加事件函数
 function addfun(element,type,fun){
 	if(element.addEventListener){
@@ -71,97 +70,29 @@ var side=function(){
 		}
 	}
 }
-// 图片效果
-function carousel(){
-	var lef=document.getElementById('left');
-	var rig=document.getElementById('right');
-	// 获取图片li数组
-	var car=document.getElementById('car').getElementsByTagName('li');
-	// 获取控制按钮的数组
-	var ctr=document.getElementById('ctr').getElementsByTagName('li');
-	var m=0,flag=true,now,next,z=10;
-	// 为左右按钮添加点击事件
-	lef.onclick=function(){
-		animate(-1,flag);
-	};
-	rig.onclick=function(){
-		animate(1,flag);
-	};
-	// 为控制按钮添加事件
-	for(var j=0;j<ctr.length;j++){
-		ctr[j].index=j;
-		ctr[j].onmouseover=function(){
-			animate(this.index-m,flag);
-		}
-	}
-
-	function animate(d,f){
+// 图片透明度变化动画
+/*
+参数：  d  控制方向 -1向左 1向右
+	    f  标志  防止动画不停变化 true执行 false 不执行
+		pro  图片的数组  进行数量的判断和改变图片的透明度
+		pu  控制按钮的数组  进行控制按钮的类名变化进而改变样式
+		m  为图片和按钮的index值 判断当前展示图片的索引
+*/
+function animate(d,f,pro,pu,m){
+		var now,next,z=10;
 		if(f){
 			flag=false;
-			if(m>car.length-1){
-				m=0;
-			}else if(m<0){
-				m=car.length-1;
-			}
-			// 把当前索引复制到now变量下一个复制到next变量
-			now=m;
-			next=m+d;
-			if(next>car.length-1){
-				next=0;
-			}else if(next<0){
-				next=car.length-1;
-			}
-			m=next;
-			// 清除所有样式
-			for(var i=0;i<car.length;i++){
-				car[i].style.opacity=0;
-				ctr[i].className='';
-			}
-
-			car[next].style.opacity=1;
-
-			setTimeout(function(){
-				flag=true;
-			},500);
-					
-			ctr[next].className='active';
-
-		}
-	}
-}
-function g(){
-	// 优品专辑
-	var le=document.getElementById('lef');
-	var ri=document.getElementById('rig');
-	// 获取图片li数组
-	var pro=document.getElementById('pro').getElementsByTagName('div');
-	// 获取控制按钮的数组
-	var pu=document.getElementById('pu').getElementsByTagName('li');
-	var m=0,flag=true,now,next,z=10;
-	le.onclick=function(){
-		animate(-1,flag);
-	};
-	ri.onclick=function(){
-		animate(1,flag);
-	};
-	// 为控制按钮添加事件
-	for(var j=0;j<pu.length;j++){
-		pu[j].index=j;
-		pu[j].onmouseover=function(){
-			animate(this.index-m,flag);
-		}
-	}
-	function animate(d,f){
-		if(f){
-			flag=false;
+			// 进行范围的判断
 			if(m>pro.length-1){
 				m=0;
 			}else if(m<0){
 				m=pro.length-1;
 			}
-			// 把当前索引复制到now变量下一个复制到next变量
+			// 把当前索引复制到now变量下一个索引复制到next变量
 			now=m;
 			next=m+d;
+
+			// 进行范围的判断
 			if(next>pro.length-1){
 				next=0;
 			}else if(next<0){
@@ -175,22 +106,103 @@ function g(){
 			}
 
 			pro[next].style.opacity=1;
-
+			pu[next].className='active';
 			setTimeout(function(){
 				flag=true;
 			},500);
-					
-			pu[next].className='active';
+			//返回当前索引值 
+			return m;
+		}
+		
+	}
 
+
+// 图片效果
+function carousel(){
+	var lef=document.getElementById('left');
+	var rig=document.getElementById('right');
+	// 获取图片li数组
+	var car=document.getElementById('car').getElementsByTagName('li');
+	// 获取控制按钮的数组
+	var ctr=document.getElementById('ctr').getElementsByTagName('li');
+
+	// 页面加载后动画每隔5s自动执行
+	var time=setInterval(function(){
+		m=animate(1,flag,car,ctr,m);
+	},2000);
+
+	//  col为图片的父容器当鼠标移入图片就停止自动动画 移除执行动画
+	var col=document.getElementsByClassName('col2-top')[0];
+	col.onmouseover=function(){
+		clearInterval(time);
+	};
+	col.onmouseout=function(){
+		time=setInterval(function(){
+		m=animate(1,flag,car,ctr,m);
+	},2000);
+	};
+
+	var flag=true,m=0;
+	// 为左右按钮添加点击事件
+	lef.onclick=function(){
+		m=animate(-1,flag,car,ctr,m);
+	};
+	rig.onclick=function(){
+		m=animate(1,flag,car,ctr,m);
+	};
+	// 为控制按钮添加事件
+	for(j=0;j<ctr.length;j++){
+		ctr[j].index=j;
+		ctr[j].onmouseover=function(){
+			m=animate(this.index-m,flag,car,ctr,m);
 		}
 	}
 }
-function h(){
+
+function special(){
+	// 优品专辑
+	var le=document.getElementById('lef');
+	var ri=document.getElementById('rig');
+	// 获取图片li数组
+	var pro=document.getElementById('pro').getElementsByTagName('div');
+	// 获取控制按钮的数组
+	var pu=document.getElementById('pu').getElementsByTagName('li');
+	var flag=true,m=0;
+	var time=setInterval(function(){
+		m=animate(1,flag,pro,pu,m);
+	},2000);
+	// p 优品专辑的容器
+	var p=document.getElementById('pro');
+	p.onmouseover=function(){
+		clearInterval(time);
+	};
+	p.onmouseout=function(){
+		time=setInterval(function(){
+		m=animate(1,flag,pro,pu,m);
+	},2000);
+	};
+
+	le.onclick=function(){
+		m=animate(-1,flag,pro,pu,m);
+	};
+	ri.onclick=function(){
+		m=animate(1,flag,pro,pu,m);
+	};
+	// 为控制按钮添加事件
+	for(j=0;j<pu.length;j++){
+		pu[j].index=j;
+		pu[j].onmouseover=function(){
+			m=animate(this.index-m,flag,pro,pu,m);
+		}
+	}
+	
+}
+function label(){
 	var con=document.getElementById('lab').getElementsByTagName('li');
 	var di=document.getElementsByClassName('pro_3-show_1');
 	var mar=document.getElementsByClassName('mark')[0];
 	var m=0,now,next;
-	for(var i=0;i<con.length;i++){
+	for(i=0;i<con.length;i++){
 		con[i].index=i;
 		con[i].onmouseover=function(){
 			animate(this.index-m);
@@ -210,7 +222,7 @@ function h(){
 			}else if(next<0){
 				next=con.length-1;
 			}
-			for(var j=0;j<con.length;j++){
+			for(j=0;j<con.length;j++){
 				di[j].style.display='none';
 			}
 			di[next].style.display="block";
@@ -221,10 +233,12 @@ function h(){
 			}
 	}
 }
-g();
-h();
+special();
+label();
 carousel();
 client();
 side();
+
+
 
 
