@@ -1,5 +1,6 @@
 "use strict";
 // 封装添加事件函数
+
 function addfun(element,type,fun){
 	if(element.addEventListener){
 		element.addEventListener(type,fun);
@@ -52,7 +53,8 @@ var side=function(){
 	var item=document.getElementsByClassName('col1_show_item');
 
 	var s=document.getElementsByClassName('item');
-	for(let i=0;i<15;i++){
+	for(let i=0;i<item.length;i++){
+			
 		s[i].onmouseover=function(event){
 			sidecon.style.display='block';
 			item[i].style.display='block';
@@ -82,7 +84,7 @@ var side=function(){
 function animate(d,f,pro,pu,m){
 		var now,next,z=10;
 		if(f){
-			flag=false;
+			f=false;
 			// 进行范围的判断
 			if(m>pro.length-1){
 				m=0;
@@ -108,11 +110,13 @@ function animate(d,f,pro,pu,m){
 
 			pro[next].style.opacity=1;
 			pu[next].className='active';
-			setTimeout(function(){
-				flag=true;
-			},500);
+			
+		// setTimeout(function(){
+		// 		f=true;
+		// 	},1000);
+			f=true;
 			//返回当前索引值 
-			return m;
+			return [m,f];
 		}
 		
 	}
@@ -126,10 +130,12 @@ function carousel(){
 	var car=document.getElementById('car').getElementsByTagName('li');
 	// 获取控制按钮的数组
 	var ctr=document.getElementById('ctr').getElementsByTagName('li');
-
+var a=[0,true];
 	// 页面加载后动画每隔5s自动执行
 	var time=setInterval(function(){
-		m=animate(1,flag,car,ctr,m);
+		console.log(a[1]);
+		a=animate(1,a[1],car,ctr,a[0]);
+		console.log(a[1]);
 	},2000);
 
 	//  col为图片的父容器当鼠标移入图片就停止自动动画 移除执行动画
@@ -139,23 +145,24 @@ function carousel(){
 	};
 	col.onmouseout=function(){
 		time=setInterval(function(){
-		m=animate(1,flag,car,ctr,m);
+		a=animate(1,a[1],car,ctr,a[0]);
 	},2000);
 	};
 
-	var flag=true,m=0;
+	// var m=0,flag=true;
+	
 	// 为左右按钮添加点击事件
 	lef.onclick=function(){
-		m=animate(-1,flag,car,ctr,m);
+		a=animate(-1,a[1],car,ctr,a[0]);
 	};
 	rig.onclick=function(){
-		m=animate(1,flag,car,ctr,m);
+		a=animate(1,a[1],car,ctr,a[0]);
 	};
 	// 为控制按钮添加事件
-	for(j=0;j<ctr.length;j++){
+	for(var j=0;j<ctr.length;j++){
 		ctr[j].index=j;
 		ctr[j].onmouseover=function(){
-			m=animate(this.index-m,flag,car,ctr,m);
+			a=animate(this.index-a[0],a[1],car,ctr,a[0]);
 		}
 	}
 }
@@ -164,13 +171,14 @@ function special(){
 	// 优品专辑
 	var le=document.getElementById('lef');
 	var ri=document.getElementById('rig');
+	var a=[0,true];
 	// 获取图片li数组
 	var pro=document.getElementById('pro').getElementsByTagName('div');
 	// 获取控制按钮的数组
 	var pu=document.getElementById('pu').getElementsByTagName('li');
-	var flag=true,m=0;
+
 	var time=setInterval(function(){
-		m=animate(1,flag,pro,pu,m);
+		a=animate(1,a[1],pro,pu,a[0]);
 	},2000);
 	// p 优品专辑的容器
 	var p=document.getElementById('pro');
@@ -179,21 +187,21 @@ function special(){
 	};
 	p.onmouseout=function(){
 		time=setInterval(function(){
-		m=animate(1,flag,pro,pu,m);
+		a=animate(1,a[1],pro,pu,a[0]);
 	},2000);
 	};
 
 	le.onclick=function(){
-		m=animate(-1,flag,pro,pu,m);
+		a=animate(-1,a[1],pro,pu,a[0]);
 	};
 	ri.onclick=function(){
-		m=animate(1,flag,pro,pu,m);
+		a=animate(1,a[1],pro,pu,a[0]);
 	};
 	// 为控制按钮添加事件
-	for(j=0;j<pu.length;j++){
+	for(var j=0;j<pu.length;j++){
 		pu[j].index=j;
 		pu[j].onmouseover=function(){
-			m=animate(this.index-m,flag,pro,pu,m);
+			a=animate(this.index-a[0],a[1],pro,pu,a[0]);
 		}
 	}
 	
@@ -203,7 +211,7 @@ function label(){
 	var di=document.getElementsByClassName('pro_3-show_1');
 	var mar=document.getElementsByClassName('mark')[0];
 	var m=0,now,next;
-	for(i=0;i<con.length;i++){
+	for(var i=0;i<con.length;i++){
 		con[i].index=i;
 		con[i].onmouseover=function(){
 			animate(this.index-m);
