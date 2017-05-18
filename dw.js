@@ -231,7 +231,7 @@ function label(){
 			}else if(next<0){
 				next=con.length-1;
 			}
-			for(j=0;j<con.length;j++){
+			for(var j=0;j<con.length;j++){
 				di[j].style.display='none';
 			}
 			di[next].style.display="block";
